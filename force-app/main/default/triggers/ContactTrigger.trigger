@@ -1,4 +1,71 @@
-trigger ContactTrigger on Contact (before insert, before update, after insert, after update) {
+trigger ContactTrigger on Contact (before insert, before update, after insert, after update, after delete, after undelete) {
+    /*Soru : Yeni bir Contact create edilip bir Accounta bağlandığında, Accounta bağlı bir Contact delete edildiğinde veya Bir Contact update edilerek bir Account ile bağlantısı kesilirse, bir Accounta bağlanırsa ya da bağlantı değişirse Accountta Number_of_Contacts__c fieldi güncellenecek..*/
+
+      //Bu durumdan etkilenen accountlarin idlerini icinde toplayacagim bir set yapisi olusturmaliyim.
+      
+      set<id> accountIds = new set<id>();
+
+    // contacttaki islem bittikten sonra accountta bir guncelleme olacak o yuzden after
+
+       if(trigger.isAfter){
+          if(trigger.isInsert || trigger.isUndelete){
+             for(contact c: trigger.new){
+                if(c.AccountId!= null){
+                    accountIds.add(c.AccountId);
+                }
+             }
+          }
+          if(trigger.isUpdate){
+              for(contact c: trigger.new){
+                //update durumunda hem eski account hem de yeni account etkilendiginden ikisini de aliriz.
+                if(c.AccountId != trigger.oldMap.get(c.id).AccountId){
+                    accountIds.add(c.AccountId);
+                    accountids.add(trigger.oldMap.get(c.id).AccountId);
+                }
+              }
+          }
+          if(trigger.isDelete){
+              for(contact c: trigger.old){
+                if(c.AccountId != null){
+                    accountIds.add(c.AccountId);
+                }
+              }
+          }
+
+          if(!accountIds.isEmpty()){
+             //bu account idlere ait tum accountlari contactlari ile birlikte soql yaparak getiriyoruz.
+             list<account> accList =[ select id, name, Number_Of_Contacts__c,(select id from Contacts) from Account where id in : accountIds];
+             //her bir account recordunun icine girelim.contact sayilarini hesaplayalim.
+             for(account acc: accList){
+                acc.Number_Of_Contacts__c= acc.Contacts.size();
+             }
+             update accList;
+          }
+        }
+    }
+
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
     /*if (trigger.isBefore && trigger.isInsert) {
         System.debug('trigger new = ' + trigger.new);
         //List<Contact> cList = trigger.new;
@@ -37,7 +104,7 @@ trigger ContactTrigger on Contact (before insert, before update, after insert, a
         System.debug('========END========');
 
     }*/
-    if (trigger.isAfter && trigger.isUpdate) {
+    /*if (trigger.isAfter && trigger.isUpdate) {
         //Eski firstname ile yeni first name ayni satirda yazin..
         //version 1
         System.debug('Version 1');
@@ -82,8 +149,8 @@ trigger ContactTrigger on Contact (before insert, before update, after insert, a
             System.debug('id : ' + c.id);
         }
         System.debug('========END========');*/
-    }   
-}
+      
+
     /*if(trigger.isBefore && trigger.isInsert){
        system.debug('trigger new = ' + trigger.new);
        //list<contact> cList = trigger.new;
@@ -155,4 +222,4 @@ trigger ContactTrigger on Contact (before insert, before update, after insert, a
         System.debug('========END===============');
     }*/
 
-
+    
