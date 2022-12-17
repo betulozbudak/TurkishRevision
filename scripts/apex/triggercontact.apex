@@ -1,6 +1,22 @@
-contact cn= new contact();
-cn.LastName ='Trigger Test';
-insert cn;
+list<contact> conList = new list<contact>();
 
-cn.LastName ='Trigger Test Update';
-update cn;
+contact cn1= new contact();
+cn1.LastName ='Fire';
+List<Contact> conList = new List<Contact>();
+contact cn1 = new contact();
+cn1.FirstName = 'Jack';
+cn1.LastName = 'Fire';
+conList.add(cn1);
+
+contact cn2 = new contact();
+cn2.FirstName = 'Marry';
+cn2.LastName = 'Fire';
+conList.add(cn2);
+
+insert conList;
+
+for (contact c : conList) {
+    c.FirstName += ' Update 2';
+    c.LastName += ' Update 2';
+}
+update conList;
