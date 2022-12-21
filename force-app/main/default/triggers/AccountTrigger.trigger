@@ -1,5 +1,9 @@
-trigger AccountTrigger on Account (before insert,before update,after insert,after update) {
-     //1 Account create edildiğinde. ona bağlı 7 tane Contact otomatik olarak create edilsin. first name'i account name ile aynı olsun. last name i contact 1 2 3.. diye isimlendirilsin..
+trigger AccountTrigger on Account(before insert,after insert){
+    if(Trigger.isBefore && Trigger.isInsert){
+    AccountTriggerHandler.duplicateValidation(trigger.new,trigger.newMap);
+    }
+    
+    /* //1 Account create edildiğinde. ona bağlı 7 tane Contact otomatik olarak create edilsin. first name'i account name ile aynı olsun. last name i contact 1 2 3.. diye isimlendirilsin..
     if(trigger.isAfter && trigger.isInsert){
         list<contact> conList= new List<Contact>();
         for(account acc: trigger.new){
@@ -33,4 +37,5 @@ trigger AccountTrigger on Account (before insert,before update,after insert,afte
                 }
             }
         }
+*/
 }
