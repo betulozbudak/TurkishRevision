@@ -6,7 +6,7 @@ public class SoqlDemo11 {
     return recordnum;
     }
 
-    public static void accountWithContacts(){
+    /*public static void accountWithContacts(){
         list<account> accList = [select id, name,(select id, lastName from contacts) from account where Industry = 'Energy'];
         system.debug(accList);
         for( account acc: accList){
@@ -16,5 +16,5 @@ public class SoqlDemo11 {
                 system.debug(con.lastName);
             }
         }
-    }
+    }*/
 }
