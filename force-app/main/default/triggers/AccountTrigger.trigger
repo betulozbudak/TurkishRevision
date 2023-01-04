@@ -1,9 +1,33 @@
-trigger AccountTrigger on Account(before insert,after insert){
-    if(Trigger.isBefore && Trigger.isInsert){
+trigger AccountTrigger on Account(before insert,after insert,before update,after update){
+    if(trigger.isAfter && trigger.isUpdate){
+        
+            AccountTriggerHandler.contactRelatedAccount(trigger.new,trigger.old,trigger.newMap,trigger.oldMap);
+    
+    }
+    
+    //1 Account create edildiğinde. ona bağlı 7 tane Contact otomatik olarak create edilsin. first name'i account name ile aynı olsun. last name i contact 1 2 3.. diye isimlendirilsin..
+    /* if (trigger.isAfter && trigger.isInsert) {
+        AccountTriggerHandler.createContact(trigger.new);
+    }
+
+     // 2. Bir account update edildiğinde name değişmişse description fieldine name değişti mesajı yazdır..
+     if (trigger.isBefore && trigger.isUpdate) {
+        AccountTriggerHandler.updateName(trigger.new, trigger.oldMap);
+
+        /*for (account acc : trigger.new) {
+            if (acc.name != trigger.oldMap.get(acc.id).name) {
+                acc.Description = 'Bu recordda isim degisikligi oldu..';
+            }
+        }
+     }*/
+
+
+    /*if(Trigger.isBefore && Trigger.isInsert){
     AccountTriggerHandler.duplicateValidation(trigger.new,trigger.newMap);
     }
     
-    /* //1 Account create edildiğinde. ona bağlı 7 tane Contact otomatik olarak create edilsin. first name'i account name ile aynı olsun. last name i contact 1 2 3.. diye isimlendirilsin..
+    //1 Account create edildiğinde. ona bağlı 7 tane Contact otomatik olarak create edilsin. first name'i account name ile aynı olsun. last name i contact 1 2 3.. diye isimlendirilsin..
+    
     if(trigger.isAfter && trigger.isInsert){
         list<contact> conList= new List<Contact>();
         for(account acc: trigger.new){
@@ -16,10 +40,10 @@ trigger AccountTrigger on Account(before insert,after insert){
             }
         }
         insert conList;
-     }
+     }*/
 
-      // 2. Bir account update edildiğinde name değişmişse description fieldine name değişti mesajı yazdır..
-      if(trigger.isBefore&&trigger.isUpdate){
+     // 2. Bir account update edildiğinde name değişmişse description fieldine name değişti mesajı yazdır..
+    /*if(trigger.isBefore&&trigger.isUpdate){
          for(account acc: trigger.new){
             if(acc.name != trigger.oldMap.get(acc.id).name){
                acc.Description='Bu recordun ismi degisti';
@@ -36,6 +60,6 @@ trigger AccountTrigger on Account(before insert,after insert){
                     acc.Name.addError('isim degisikligi yapamazsiniz..');
                 }
             }
-        }
-*/
+        }*/
+
 }

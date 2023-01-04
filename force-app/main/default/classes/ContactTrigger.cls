@@ -1,7 +1,7 @@
 public class ContactTrigger {
     /*Yeni bir Contact mevcut bir Accounta bağlı olarak oluşturulduğunda Contact other phone bağlı olduğu Account phone olsun.*/
     //1.yol
-    public static void otherPhoneOfContact(list<contact> trgNew,map< id,contact> trgNewMap){
+    /*public static void otherPhoneOfContact(list<contact> trgNew,map< id,contact> trgNewMap){
         //insert edilen contactlardan accounta bagli olanlari secelim.
         set<id> conIds = new set<id>();
         for(contact con : trgNew){
@@ -43,6 +43,6 @@ public class ContactTrigger {
                 con.OtherPhone = AccMap.get(con.AccountId).Phone;
             }
 
-        }
+        }*/
 }
 
