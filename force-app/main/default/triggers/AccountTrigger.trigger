@@ -1,5 +1,13 @@
 trigger AccountTrigger on Account(before insert,after insert,before update,after update){
+
     if(trigger.isAfter && trigger.isUpdate){
+       FutureExample.updateDescriptionHelper(trigger.new,trigger.oldMap);
+    }
+
+
+
+
+    /*if(trigger.isAfter && trigger.isUpdate){
         
             AccountTriggerHandler.contactRelatedAccount(trigger.new,trigger.old,trigger.newMap,trigger.oldMap);
     
